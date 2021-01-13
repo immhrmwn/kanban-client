@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- <meta name="google-signin-client_id" content="516493629088-87o5eh3a66eps2rjvbov8apnfqie8uip.apps.googleusercontent.com"> -->
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+  <link rel="stylesheet" href="style.css">
+  <title>kaban</title>
+</head>
+<body>
+  <div id="app">
+    <!-- LOGIN PAGE -->
+    <section id="login-page" v-if="logout">
+      <div class="center">
+          <h1 style="margin-bottom: 3rem;" class="welcome">KABAN</h1>
+          <div class="container-fluid d-flex flex-row">
+            <div id="login-form-page">
+              <div class="container d-flex justify-content-center">
+                <form style="width: 20rem;">
+                  <div class="mb-3">
+                    <h2>Sign In</h2>
+                  </div>
+                  <div class="mb-3">
+                    <label for="email" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="Password">
+                  </div>
+                  <button @click="login(true)" type="submit" class="btn btn-primary" id="login-btn">Sign in</button>
+                  <button type="submit" class="btn btn-success" id="gotoregister-btn">Don't have Account</button>
+                  <div>
+                    <h6 class="mt-3">Or Sign In With:</h6>
+                    <!-- GOOGLE LOGIN -->
+                    <!-- <div class="g-signin2 mt-1" data-onsuccess="onSignIn"></div> -->
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div id="register-form-page">
+              <div class="container d-flex justify-content-center">
+                <form style="width: 20rem">
+                  <div class="mb-3">
+                    <h2>Sign Up</h2>
+                  </div>
+                  <div class="mb-3">
+                    <label for="usernameregis" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="usernameregis" aria-describedby="usernameHelp" placeholder="Enter username">
+                  </div>
+                  <div class="mb-3">
+                    <label for="emailregis" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="emailregis" aria-describedby="emailHelp" placeholder="Enter email">
+                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="passwordregis" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="passwordregis" placeholder="Password">
+                  </div>
+                  <button type="submit" class="btn btn-primary" id="register-btn">Sign up</button>
+                  <button type="submit" class="btn btn-success" id="gotologin-btn">I have an Account</button>
+                  <div>
+                    <h6 class="mt-3">Or Sign In With:</h6>
+                    <!-- GOOGLE LOGIN -->
+                    <!-- <div class="g-signin2 mt-1" data-onsuccess="onSignIn"></div> -->
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+      </div>
+    </section>
+    
+    <section id="main-page" v-else-if="!logout">
+      <!-- NAV -->
+      <nav class="navbar navbar-light bg-light mb-3">
+        <div class="container">
+          <span class="navbar-brand mb-0 h1"><i class="fas fa-dice-d6"></i> KABAN</span>
+          <button @click="login(false)" class="btn btn-outline-success" type="button">Logout</button>
+        </div>
+      </nav>
+      <!-- content -->
+      <div class="container p-2">
+        <div class="row">
+            <!-- BACKLOG -->
+            <div class="col-sm d-flex justify-content-start flex-column bg-warning mx-1 box p-2 align-items-center rounded">
+              <h6 class="text-center">Backlog :</h6>
+              <div class="box1 rounded">
+                <div class="card mb-2" style="width: 16rem;">
+                  <div class="card-body">
+                    <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellat, autem.</p>
+                    <a href="#" class="btn btn-primary">Edit</a>
+                  </div>
+                </div>
+
+              </div>
+              <div class="card mb-2" style="width: 16rem;">
+                <a href="#" class="btn btn-light"><i class="fas fa-plus"></i></a>
+              </div>
+              
+            </div>
+
+            <!-- TODO -->
+            <div class="box col-sm d-flex justify-content-start flex-column bg-warning mx-1 p-2 align-items-center rounded">
+              <h6 class="text-center">Todo :</h6>
+              
+              <div class="box1 rounded">
+                <div class="card mb-2" style="width: 16rem;">
+                  <div class="card-body">
+                    <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellat, autem.</p>
+                    <a href="#" class="btn btn-primary">Edit</a>
+                  </div>
+                </div>
+
+                <div class="card mb-2" style="width: 16rem;">
+                  <div class="card-body">
+                    <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellat, autem.</p>
+                    <a href="#" class="btn btn-primary">Edit</a>
+                  </div>
+                </div>
+
+                <div class="card mb-2" style="width: 16rem;">
+                  <div class="card-body">
+                    <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellat, autem.</p>
+                    <a href="#" class="btn btn-primary">Edit</a>
+                  </div>
+                </div>
+
+              </div>
+              <div class="card mb-2" style="width: 16rem;">
+                <a href="#" class="btn btn-light"><i class="fas fa-plus"></i></a>
+              </div>
+            </div>
+
+            <!-- DOING -->
+            <div class="col-sm d-flex justify-content-start flex-column bg-warning mx-1 box p-2 align-items-center rounded">
+              <h6 class="text-center">Doing :</h6>
+
+              <div class="box1 rounded">
+                <div class="card mb-2" style="width: 16rem;">
+                  <div class="card-body">
+                    <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellat, autem.</p>
+                    <a href="#" class="btn btn-primary">Edit</a>
+                  </div>
+                </div>
+
+                <div class="card mb-2" style="width: 16rem;">
+                  <div class="card-body">
+                    <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellat, autem.</p>
+                    <a href="#" class="btn btn-primary">Edit</a>
+                  </div>
+                </div>
+
+              </div>
+              <div class="card mb-2" style="width: 16rem;">
+                <a href="#" class="btn btn-light"><i class="fas fa-plus"></i></a>
+              </div>
+            </div>
+
+            <!-- DONE -->
+            <div class="col-sm d-flex justify-content-start flex-column bg-warning mx-1 box p-2 align-items-center rounded">
+              <h6 class="text-center">Done :</h6>
+
+              <div class="box1 rounded">
+                <div class="card mb-2" style="width: 16rem;">
+                  <div class="card-body">
+                    <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellat, autem.</p>
+                    <a href="#" class="btn btn-primary">Edit</a>
+                  </div>
+                </div>
+
+              </div>
+              <div class="card mb-2" style="width: 16rem;">
+                <a href="#" class="btn btn-light"><i class="fas fa-plus"></i></a>
+              </div>
+            </div>
+
+        </div>
+      </div>
+    </section>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
+  <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
+  <script src='script.js'></script>
+</body>
+</html>
