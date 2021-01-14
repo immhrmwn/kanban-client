@@ -97,17 +97,54 @@
               <div class="box1 rounded">
                 <div class="card mb-2" style="width: 16rem;" v-for="item in tasksBacklog" :key="item.id">
                   <div class="card-body">
-                    <p class="card-text">{{ item.title }}</p>
-                    <!-- <p>{{ item.date }}</p> -->
-                    <a href="#" class="btn btn-primary" @click.prevent="editTask(item.id)">Edit</a>
+                    <p class="card-text" v-if="!editForm">{{ item.title }}</p>
+                    <!-- EDIT FORM -->
+                    <div class="mb-2" v-else-if="editForm">
+                      <div class="form-floating" >
+                        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"
+                        style="height: 50px;"></textarea>
+                        <label for="floatingTextarea">Title</label>
+                      </div>
+                      <div class="card-board-add-task mt-2">
+                        <button class="btn btn-success btn-sm"><i class="fa fa-check"></i>&nbsp;Edit Task</button>
+                        <button class="btn btn-secondary btn-sm" @click.prevent="closeEditForm()"><i class="fa fa-close"></i>&nbsp;Cancel</button>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="description col-7">
+                        <p>By: {{ item.username }}</p>
+                        <p>{{ item.date }}</p>
+                      </div>
+                      <div class="col-5">
+                        <button type="button" class="btn fas fa-pencil-alt edit" @click.prevent="editTask(item.id)"></button>
+                        <button type="button" class="btn far fa-trash-alt edit" @click.prevent="deleteTask(item.id)" style="color: rgb(184, 12, 12);"></button>
+                        <button type="button" class="btn fas fa-arrows-alt edit" @click.prevent="patchTask(item.id)" ></button>
+                      </div>
+                    </div> 
+                  </div>
+                </div>
+                <!-- ADD FORM -->
+                <div class="card mb-2" style="width: 16rem;" v-if="addForm">
+                  <div class="card-body">
+                    <div>
+                      <div class="form-floating">
+                        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"
+                        style="height: 57px; resize: none;"></textarea>
+                        <label for="floatingTextarea">Title</label>
+                      </div>
+                      <div class="card-board-add-task mt-2">
+                        <button class="btn btn-sm"><i class="fa fa-plus"></i>&nbsp;Add Task</button>
+                        <button class="btn btn-secondary btn-sm" @click.prevent="letsAdd(false)"><i class="fa fa-close"></i>&nbsp;Cancel</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
               <!-- ADD BUTTON -->
               <div class="card mb-2" style="width: 16rem;">
-                <a href="#" class="btn btn-light"><i class="fas fa-plus"></i></a>
+                <a href="#" class="btn btn-light" @click.prevent="letsAdd(true)"><i class="fas fa-plus"></i></a>
               </div>
-              
             </div>
 
             <!-- TODO -->

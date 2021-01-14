@@ -5,6 +5,8 @@ const app = new Vue({
     message: 'Hello Vue!',
     isLogout: true,
     ishaveAccount: true,
+    addForm: false,
+    editForm: false,
     tasks: [],
     newUser : {
       username: '',
@@ -27,6 +29,15 @@ const app = new Vue({
     },
     haveAccount(e) {
       this.ishaveAccount = e
+    },
+    letsAdd(e) {
+      this.addForm = e
+    },
+    editTask(id) {
+      this.editForm = true
+    },
+    closeEditForm() {
+      this.editForm = false
     },
     register() {
       axios({
@@ -113,7 +124,7 @@ const app = new Vue({
         this.userLogin.email = ''
         this.userLogin.password = ''
       })
-    } 
+    }
   },
   created() {
     console.log(this.message)
