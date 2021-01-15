@@ -3,6 +3,7 @@
     <LoginForm v-if="isLogout"
       @login="login"
       @register="register"
+      @onSignIn="onSignIn"
     ></LoginForm>
     <Home v-else-if="!isLogout"
       :categories="categories"
@@ -11,14 +12,14 @@
       @createTask="createTask"
       @deleteTask="deleteTask"
       @updateTask="updateTask"
+      @changeCategory="changeCategory"
     ></Home>
   </div>
 
 </template>
 
 <script>
-const baseUrl = 'http://localhost:3000'
-import axios from 'axios';
+import axios from '../src/config/axiosInstance';
 import Home from './components/Home';
 import LoginForm from './components/LoginForm';
 
@@ -26,7 +27,7 @@ export default {
   name: 'App',
   data() {
     return {
-      message:'Hello world! from app',
+      message:'Hello Welcome from Kanban ^_^',
       isLogout: true,
       tasks: [],
       categories: [
@@ -43,7 +44,7 @@ export default {
   },
   methods: {
     checkAuth() {
-      if(localStorage.access_token){
+      if(localStorage.access_token) {
         this.isLogout = false
         this.fetchAllTasks()
       } else {
@@ -53,7 +54,7 @@ export default {
     createTask(payload) {
       axios({
         method: 'POST',
-        url: baseUrl+'/tasks',
+        url: '/tasks',
         data: payload,
         headers: {
           access_token: localStorage.access_token
@@ -89,10 +90,10 @@ export default {
         dangerMode: true
       })
       .then(deleted => {
-        if(deleted){
+        if(deleted) {
           axios({
             method: 'DELETE',
-            url: baseUrl+'/tasks/'+id,
+            url: '/tasks/'+id,
             headers: {
               access_token: localStorage.access_token
             }
@@ -122,8 +123,7 @@ export default {
         }
       })
     },
-    updateTask(payload){
-      console.log(payload, 'from app')
+    updateTask(payload) {
       const id = payload.id
       const newTask = {
         title: payload.title,
@@ -131,7 +131,7 @@ export default {
       }
       axios({
         method: 'PUT',
-        url: baseUrl+'/tasks/'+id,
+        url: '/tasks/'+id,
         data: newTask,
         headers: {
           access_token: localStorage.access_token
@@ -158,10 +158,39 @@ export default {
         })
       })
     },
+    changeCategory(payload) {
+      const id = payload.id
+      const newCategory = {
+        category: payload.category,
+      }
+      axios({
+        method: 'PATCH',
+        url: '/tasks/'+id,
+        data: newCategory,
+        headers: {
+          access_token: localStorage.access_token
+        }
+      })
+      .then(response => {
+        this.fetchAllTasks()
+      })
+      .catch(err => {
+        let valid = ''
+        err.response.data.errors.forEach(el => {
+          valid += `${el}
+          `
+        })
+        swal({
+          title: 'UPDATE ERROR !!!',
+          text: valid,
+          icon: 'error'
+        })
+      })
+    },
     register(payload) {
       axios({
         method: 'POST',
-        url: baseUrl+'/register',
+        url: '/register',
         data: payload
       })
       .then(response => {
@@ -183,16 +212,39 @@ export default {
           icon: 'error'
         })
       })
-      .then(() => {
-        // this.newUser.username = ''
-        // this.newUser.email = ''
-        // this.newUser.password = ''
+    },
+    onSignIn(id_token) {
+      axios({
+        method: 'POST',
+        url: '/googleLogin',
+        data: { id_token }
+      })
+      .then(response => {
+        localStorage.setItem('access_token', response.data.access_token)
+        this.checkAuth()
+        swal({
+          title: 'Hallo '+ response.data.username,
+          text: 'Stay Safe, Stay at Home',
+          icon: 'success'
+        })
+      })
+      .catch(err => {
+        let valid = ''
+        err.response.data.errors.forEach(el => {
+          valid += `${el}
+          `
+        })
+        swal({
+          title: 'LOGIN ERROR !!!',
+          text: valid,
+          icon: 'error'
+        })
       })
     },
     login(payload) {
       axios({
         method: 'POST',
-        url: baseUrl+'/login',
+        url: '/login',
         data: payload
       })
       .then(response => {
@@ -217,14 +269,21 @@ export default {
         })
       })
     },
+    googleLogout() {
+      const auth2 = gapi.auth2.getAuthInstance();
+      auth2.signOut().then(function () {
+        console.log('User signed out.')
+      })
+    },
     logout() {
       localStorage.clear()
+      this.googleLogout()
       this.checkAuth()
     },
     fetchAllTasks() {
       axios({
         method: 'GET',
-        url: baseUrl+'/tasks',
+        url: '/tasks',
         headers: {
           access_token: localStorage.access_token
         }
@@ -234,10 +293,6 @@ export default {
       })
       .catch(err => {
         console.log(err)
-      })
-      .then(() => {
-        // this.userLogin.email = ''
-        // this.userLogin.password = ''
       })
     }
   },

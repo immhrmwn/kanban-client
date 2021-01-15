@@ -10,6 +10,7 @@
         :task="task"
         @deleteTask="deleteTask"
         @updateTask="updateTask"
+        @changeCategory="changeCategory"
       ></Task>
       <!-- ADD FORM -->
       <AddForm
@@ -41,7 +42,6 @@ export default {
     return {
       message: 'masuk category',
       addForm: false,
-      // editForm: false,
     }
   },
   methods: {
@@ -49,18 +49,20 @@ export default {
       this.addForm = e
     },
     createTask(payload) {
-      console.log(payload, '<<<category')
       this.$emit('createTask', payload)
     },
     deleteTask(id) {
       this.$emit('deleteTask', id)
     },
-    updateTask(payload){
+    updateTask(payload) {
       this.$emit('updateTask', payload)
     },
+    changeCategory(payload) {
+      this.$emit('changeCategory', payload)
+    }
   },
   computed:{
-    filteredTask(){
+    filteredTask() {
       return this.tasks.filter(el => el.category === this.category.title)
     },
   }

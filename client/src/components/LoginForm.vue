@@ -24,7 +24,7 @@
               <div>
                 <h6 class="mt-3">Or Sign In With:</h6>
                 <!-- GOOGLE LOGIN -->
-                <!-- <div class="g-signin2 mt-1" data-onsuccess="onSignIn"></div> -->
+                <GoogleLogin :params="params" :renderParams="renderParams" :onSuccess="onSuccess" class="center"></GoogleLogin>
               </div>
             </form>
           </div>
@@ -54,7 +54,7 @@
               <div>
                 <h6 class="mt-3">Or Sign In With:</h6>
                 <!-- GOOGLE LOGIN -->
-                <!-- <div class="g-signin2 mt-1" data-onsuccess="onSignIn"></div> -->
+                <GoogleLogin :params="params" :renderParams="renderParams" :onSuccess="onSuccess" :onFailure="onFailure" class="center"></GoogleLogin>
               </div>
             </form>
           </div>
@@ -65,10 +65,23 @@
 </template>
 
 <script>
+import GoogleLogin from 'vue-google-login';
+
 export default {
+  components: {
+    GoogleLogin
+  },
   name: 'LoginForm',
   data() {
     return {
+      params: {
+        client_id: "130326529052-rbskqm1po3g6701u4gqq86acj44p0s4t.apps.googleusercontent.com"
+      },
+      renderParams: {
+        width: 120,
+        height: 36,
+        longtitle: false
+      },
       message:'masuk login!',
       ishaveAccount: true,
       newUser : {
@@ -95,6 +108,10 @@ export default {
     },
     login() {
       this.$emit('login', this.userLogin)
+    },
+    onSuccess(googleUser) {
+      const id_token = googleUser.getAuthResponse().id_token
+      this.$emit('onSignIn', id_token)
     }
   }
 }

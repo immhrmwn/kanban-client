@@ -17,6 +17,7 @@
           @createTask="createTask"
           @deleteTask="deleteTask"
           @updateTask="updateTask"
+          @changeCategory="changeCategory"
         ></Category>
       </div>
     </div>
@@ -47,10 +48,12 @@ export default {
     deleteTask(id) {
       this.$emit('deleteTask', id)
     },
-    updateTask(payload){
-      console.log(payload, 'from home')
+    updateTask(payload) {
       this.$emit('updateTask', payload)
     },
+    changeCategory(payload) {
+      this.$emit('changeCategory', payload)
+    }
   }
 }
 </script>

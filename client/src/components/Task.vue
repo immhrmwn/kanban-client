@@ -6,8 +6,12 @@
       <div class="mb-2" v-else-if="editForm">
         <form @submit.prevent="updateTask">
           <div class="form-floating" >
-            <textarea v-model="newTask.title" class="form-control" placeholder="Leave a comment here" id="floatingTextarea"
-            style="height: 50px;"></textarea>
+            <textarea v-model="newTask.title" 
+              class="form-control"
+              placeholder="Leave a comment here"
+              id="floatingTextarea"
+              style="height: 50px;"
+            ></textarea>
             <label for="floatingTextarea">Title</label>
           </div>
           <div class="card-board-add-task mt-2">
@@ -20,12 +24,19 @@
       <div class="row">
         <div class="description col-7">
           <p>By: {{ task.username }}</p>
-          <p>{{ task.date }}</p>
+          <p>{{ dateFormat }}</p>
         </div>
-        <div class="col-5">
+        <div class="col-5 dropdown">
           <button type="button" class="btn fas fa-pencil-alt edit" @click.prevent="letsEdit(true)"></button>
           <button type="button" class="btn far fa-trash-alt edit" @click.prevent="deleteTask(task.id)" style="color: rgb(184, 12, 12);"></button>
-          <button type="button" class="btn fas fa-arrows-alt edit" @click.prevent="patchTask(task.id)" ></button>
+          <button type="button" class="btn fas fa-arrows-alt edit dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"></button>
+          <ul class="dropdown-menu">
+            <!-- Dropdown menu links -->
+            <li><button class="dropdown-item center" type="button" @click.prevent="patchTask('backlog')">backlog</button></li>
+            <li><button class="dropdown-item center" type="button" @click.prevent="patchTask('todo')">todo</button></li>
+            <li><button class="dropdown-item center" type="button" @click.prevent="patchTask('doing')">doing</button></li>
+            <li><button class="dropdown-item center" type="button" @click.prevent="patchTask('done')">done</button></li>
+          </ul>
         </div>
       </div> 
     </div>
@@ -44,12 +55,15 @@ export default {
         id: this.task.id,
         title: this.task.title,
         category: this.task.category
+      },
+      newCategory: {
+        id: this.task.id,
+        category: ''
       }
     }
   },
   methods: {
     deleteTask(id) {
-      console.log('masuk')
       this.$emit('deleteTask', id)
     },
     updateTask(){
@@ -59,11 +73,19 @@ export default {
     letsEdit(e) {
       this.editForm = e
     },
-    patchTask() {
-      // PR 
+    patchTask(category) {
+      this.newCategory.category = category
+      this.$emit('changeCategory', this.newCategory)
+
     },
     closeEditForm() {
       this.editForm = false
+    },
+  },
+  computed:{
+    dateFormat(){
+      let date = this.task.date.slice(0, 10)
+      return date
     },
   }
 }
