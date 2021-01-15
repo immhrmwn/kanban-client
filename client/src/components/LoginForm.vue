@@ -54,7 +54,7 @@
               <div>
                 <h6 class="mt-3">Or Sign In With:</h6>
                 <!-- GOOGLE LOGIN -->
-                <GoogleLogin :params="params" :renderParams="renderParams" :onSuccess="onSuccess" :onFailure="onFailure" class="center"></GoogleLogin>
+                <GoogleLogin :params="params" :renderParams="renderParams" :onSuccess="onSuccess" class="center"></GoogleLogin>
               </div>
             </form>
           </div>
@@ -75,7 +75,7 @@ export default {
   data() {
     return {
       params: {
-        client_id: "130326529052-rbskqm1po3g6701u4gqq86acj44p0s4t.apps.googleusercontent.com"
+        client_id: "130326529052-2ejn62jhtikirbde0s5cq3e1kpk0q42u.apps.googleusercontent.com"
       },
       renderParams: {
         width: 120,
